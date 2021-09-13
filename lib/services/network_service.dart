@@ -7,11 +7,11 @@ import 'package:movie_app/model/rpsingle_movie_model.dart';
 
 class NetworkServices {
   static const String baseUrl = "https://api.themoviedb.org/3/movie/";
-  static const String apiKey = '?api_key=YOUR_API_KEY';
+  static const String apiKey = '?api_key=5c47dbfff6b4eb2c731bd11f1c1c83eb';
   static var client = http.Client();
 
-  Future<RpMoviesModel> fetchMovies() async {
-    var uri = Uri.parse(baseUrl + 'popular' + apiKey);
+  Future<RpMoviesModel> fetchMovies({String? page}) async {
+    var uri = Uri.parse(baseUrl + 'popular' + apiKey + '&page=$page');
     http.Response response = await client.get(uri);
     if (response.statusCode == 200) {
       var posts = jsonDecode(response.body);
@@ -23,8 +23,8 @@ class NetworkServices {
     }
   }
 
-  Future<RpSingleMoviesModel> fetchSingleMovie(int id) async {
-    var uri = Uri.parse(baseUrl + id.toString() + apiKey);
+  Future<RpSingleMoviesModel> fetchSingleMovie({String? movieId}) async {
+    var uri = Uri.parse(baseUrl + movieId.toString() + apiKey);
     http.Response response = await client.get(uri);
     if (response.statusCode == 200) {
       var posts = jsonDecode(response.body);
