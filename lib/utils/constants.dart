@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'size_config.dart';
 
 const String kImageDir = 'assets/images/';
-// const String kImageUrl = 'https://admin.trustcollectorapp.com/';
+const String kImageUrl = 'http://image.tmdb.org/t/p/w185';
 // const String kBase64Extend = 'data:image/jpeg;base64,';
 // const String kBase64ExtendVideo = 'data:video/mp4;base64,';
 // const String kBase64ExtendAudio = 'data:audio/mp3;base64,';
@@ -18,6 +18,7 @@ const kOrdinaryColor = Color(0xFFA1A1A1);
 const kOrdinaryColor2 = Color(0xFFEEEEEE);
 const kBackGroundColor = Color(0xFF2A2C36);
 const kDarkColor = Color(0xFF1E1F28);
+const kGoldColor = Color(0xFFFFD700);
 const kErrorColor = Color(0xFFFF2424);
 const kSuccessColor = Color(0xFF55D85A);
 const kSaleColor = Color(0xFFF14705);

@@ -49,7 +49,7 @@ class RpSingleMoviesModel {
   late final String tagline;
   late final String title;
   late final bool video;
-  late final int voteAverage;
+  late final dynamic voteAverage;
   late final int voteCount;
 
   RpSingleMoviesModel.fromJson(Map<String, dynamic> json) {

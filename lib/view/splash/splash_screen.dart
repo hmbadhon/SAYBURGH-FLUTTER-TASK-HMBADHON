@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie_app/utils/size_config.dart';
 import 'package:movie_app/view/home_screen/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,15 +18,15 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     // TODO: implement initState
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-    _animationController.forward();
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _animation = CurvedAnimation(
       parent: _animationController,
-      curve: Curves.fastOutSlowIn,
+      curve: Curves.easeOut,
     );
+
+    _animation.addListener(() => setState(() {}));
+    _animationController.forward();
     Timer(
       const Duration(seconds: 2),
       () => Navigator.pushNamedAndRemoveUntil(
@@ -43,12 +44,17 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: FadeTransition(
-          opacity: _animation,
-          child: Image.asset('assets/images/logo.png'),
+        child: RotationTransition(
+          turns: _animation,
+          child: Image.asset(
+            'assets/images/logo.png',
+            width: _animation.value * 250,
+            height: _animation.value * 250,
+          ),
         ),
       ),
     );
