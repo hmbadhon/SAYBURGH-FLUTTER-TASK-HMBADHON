@@ -15,7 +15,7 @@ class DetailsScreen extends StatefulWidget {
 
   const DetailsScreen({
     Key? key,
-    @required this.movieId,
+    this.movieId,
   }) : super(key: key);
 
   @override
@@ -190,7 +190,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: ' People voted',
+                                      text: ' Peoples voted',
                                       style: kRegularText2.copyWith(
                                         color: kBlackColor.withOpacity(.6),
                                         fontStyle: FontStyle.italic,

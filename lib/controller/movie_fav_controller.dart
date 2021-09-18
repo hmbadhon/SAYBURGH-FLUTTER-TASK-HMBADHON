@@ -50,13 +50,13 @@ class MovieFavoriteController extends GetxController {
     try {
       isLoading(true);
       await _databaseHelper.deleteFav(id);
-      queryAllFav();
+      await queryAllFav();
     } finally {
       isLoading(false);
     }
   }
 
-  void queryAllFav() async {
+  Future<void> queryAllFav() async {
     try {
       isLoading(true);
       var product = await _databaseHelper.queryAllFav();
