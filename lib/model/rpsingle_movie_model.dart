@@ -2,7 +2,6 @@ class RpSingleMoviesModel {
   RpSingleMoviesModel({
     required this.adult,
     required this.backdropPath,
-    required this.belongsToCollection,
     required this.budget,
     required this.genres,
     required this.homepage,
@@ -28,7 +27,7 @@ class RpSingleMoviesModel {
   });
   late final bool adult;
   late final String backdropPath;
-  late final BelongsToCollection belongsToCollection;
+
   late final int budget;
   late final List<Genres> genres;
   late final String homepage;
@@ -55,8 +54,7 @@ class RpSingleMoviesModel {
   RpSingleMoviesModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
-    belongsToCollection =
-        BelongsToCollection.fromJson(json['belongs_to_collection']);
+
     budget = json['budget'];
     genres = List.from(json['genres']).map((e) => Genres.fromJson(e)).toList();
     homepage = json['homepage'];
@@ -91,7 +89,6 @@ class RpSingleMoviesModel {
     final _data = <String, dynamic>{};
     _data['adult'] = adult;
     _data['backdrop_path'] = backdropPath;
-    _data['belongs_to_collection'] = belongsToCollection.toJson();
     _data['budget'] = budget;
     _data['genres'] = genres.map((e) => e.toJson()).toList();
     _data['homepage'] = homepage;

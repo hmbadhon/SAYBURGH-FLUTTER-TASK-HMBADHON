@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:movie_app/controller/movies_list_controller.dart';
 import 'package:movie_app/sheared/custom_loader.dart';
 import 'package:movie_app/utils/constants.dart';
+import 'package:movie_app/view/favorite/favorite_screen.dart';
 
 import 'details_screen.dart';
 
@@ -55,9 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Movie App'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, FavoriteScreen.routeName);
+            },
             icon: const Icon(
-              Icons.favorite_border,
+              Icons.favorite,
             ),
           ),
         ],
@@ -86,7 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, DetailsScreen.routeName);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                            movieId: _moviesController
+                                .moviesList.results[index].id
+                                .toString(),
+                          ),
+                        ),
+                      );
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -136,6 +149,26 @@ class _HomeScreenState extends State<HomeScreen> {
                               avatar: const Icon(
                                 Icons.star,
                                 color: kGoldColor,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 10,
+                            right: 10,
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: kWhiteColor,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                DateFormat('yyyy').format(
+                                  DateTime.parse(_moviesController
+                                      .moviesList.results[index].releaseDate),
+                                ),
+                                style: kRegularText2.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),

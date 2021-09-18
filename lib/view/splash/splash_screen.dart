@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 import 'package:movie_app/view/home_screen/home_screen.dart';
 
@@ -51,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen>
         child: RotationTransition(
           turns: _animation,
           child: Image.asset(
-            'assets/images/logo.png',
+            kImageDir + 'logo.png',
             width: _animation.value * 250,
             height: _animation.value * 250,
           ),
