@@ -9,36 +9,21 @@ import 'package:movie_app/sheared/custom_loader.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 
-class DetailsScreen extends StatefulWidget {
+class DetailsScreen extends StatelessWidget {
   static const routeName = 'details_screen';
   final String? movieId;
-
-  const DetailsScreen({
+  DetailsScreen({
     Key? key,
     this.movieId,
   }) : super(key: key);
-
-  @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
-}
-
-class _DetailsScreenState extends State<DetailsScreen> {
   final SingleMoviesController _singleMoviesController =
       Get.put(SingleMoviesController());
   final movieFavoriteController = Get.put(MovieFavoriteController());
 
   @override
-  void initState() {
-    getSingleMovie(widget.movieId!);
-    super.initState();
-  }
-
-  void getSingleMovie(String movieId) async {
-    await _singleMoviesController.fetchSingleMovie(movieId: movieId);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _singleMoviesController.fetchSingleMovie(movieId: movieId);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Obx(
