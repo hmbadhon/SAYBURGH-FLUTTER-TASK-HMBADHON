@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 import 'package:movie_app/view/auth/signup_screen.dart';
+import 'package:movie_app/view/home_screen/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../main.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = 'splash_screen';
@@ -18,7 +22,10 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _animation;
   @override
   void initState() {
-    // TODO: implement initState
+    SharedPreferences.getInstance().then((pr) {
+      prefs = pr;
+    });
+
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     _animation = CurvedAnimation(
@@ -29,8 +36,13 @@ class _SplashScreenState extends State<SplashScreen>
     _animation.addListener(() => setState(() {}));
     _animationController.forward();
     Timer(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(
-          context, SignUpScreen.routeName, (route) => false);
+      if (prefs!.containsKey('token')) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeScreen.routeName, (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, SignUpScreen.routeName, (route) => false);
+      }
     });
     super.initState();
   }

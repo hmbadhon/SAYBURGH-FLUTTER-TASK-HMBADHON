@@ -9,8 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:movie_app/controller/movies_list_controller.dart';
 import 'package:movie_app/sheared/custom_loader.dart';
 import 'package:movie_app/utils/constants.dart';
+import 'package:movie_app/view/auth/login_screen.dart';
 import 'package:movie_app/view/favorite/favorite_screen.dart';
 
+import '../../main.dart';
 import 'details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,6 +64,40 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Icon(
               Icons.favorite,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.defaultDialog(
+                title: 'Are you sure?',
+                content: const Text('It will logout from your account!'),
+                actions: <Widget>[
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kPrimaryColor,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                      prefs!.clear();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, LoginScreen.routeName, (route) => false);
+                    },
+                    child: const Text("Confirm"),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(color: kPrimaryColor),
+                    ),
+                  ),
+                ],
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
             ),
           ),
         ],

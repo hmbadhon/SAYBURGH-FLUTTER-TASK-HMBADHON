@@ -1,15 +1,24 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:movie_app/sheared/custom_loader.dart';
 import 'package:movie_app/sheared/default_btn.dart';
 import 'package:movie_app/sheared/input_form_widget.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
+import 'package:movie_app/view/home_screen/home_screen.dart';
+
+import '../../main.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = 'login_screen';
   LoginScreen({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _numberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         InputFormWidget(
-                          fieldController: _numberController,
+                          fieldController: _emailController,
                           labelText: 'Email Address',
                           icon: Icons.email,
                           fillColor: kOrdinaryColor2,
@@ -108,7 +117,42 @@ class LoginScreen extends StatelessWidget {
                             child: DefaultBtn(
                               title: 'Login',
                               onPress: () async {
-                                if (_formKey.currentState!.validate()) {}
+                                if (_formKey.currentState!.validate()) {
+                                  try {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (_) => const CustomLoader(
+                                        color: kWhiteColor,
+                                      ),
+                                    );
+                                    await _auth.signInWithEmailAndPassword(
+                                      email: _emailController.text,
+                                      password: _passController.text,
+                                    );
+                                    Navigator.pop(context);
+                                    prefs!.setBool('token', true);
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        HomeScreen.routeName, (route) => false);
+                                    _passController.clear();
+                                    _emailController.clear();
+                                  } on FirebaseAuthException catch (e) {
+                                    if (e.code == 'user-not-found') {
+                                      Navigator.pop(context);
+                                      Get.snackbar(
+                                          'No user found for that email.', '',
+                                          colorText: kBlackColor);
+                                      log('No user found for that email.');
+                                    } else if (e.code == 'wrong-password') {
+                                      Navigator.pop(context);
+                                      Get.snackbar(
+                                          'Wrong password provided for that user.',
+                                          '',
+                                          colorText: kBlackColor);
+                                      log('Wrong password provided for that user.');
+                                    }
+                                  }
+                                }
                               },
                             ),
                           ),

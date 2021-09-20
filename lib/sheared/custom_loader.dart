@@ -3,7 +3,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_app/utils/constants.dart';
 
 class CustomLoader extends StatelessWidget {
-  const CustomLoader({Key? key}) : super(key: key);
+  final Color? color;
+  const CustomLoader({
+    Key? key,
+    this.color,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +17,8 @@ class CustomLoader extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: const SpinKitFadingCircle(
-        color: kPrimaryColor,
+      child: SpinKitFadingCircle(
+        color: color ?? kPrimaryColor,
         size: 40.0,
       ),
     );
