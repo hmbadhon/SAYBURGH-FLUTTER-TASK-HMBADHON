@@ -145,21 +145,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: CachedNetworkImage(
-                              imageUrl: kImageUrl +
-                                  _moviesController
-                                      .moviesList.results[index].posterPath,
-                              fit: BoxFit.fitHeight,
-                              placeholder: (context, url) => const AspectRatio(
-                                aspectRatio: 2 / 3,
-                                child: CustomLoader(),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const AspectRatio(
-                                aspectRatio: 2 / 3,
-                                child: Icon(
-                                  Icons.error,
-                                  color: Colors.red,
+                            child: AspectRatio(
+                              aspectRatio: 2 / 3,
+                              child: CachedNetworkImage(
+                                imageUrl: kImageUrl +
+                                    _moviesController
+                                        .moviesList.results[index].posterPath,
+                                fit: BoxFit.fill,
+                                placeholder: (context, url) =>
+                                    const AspectRatio(
+                                  aspectRatio: 2 / 3,
+                                  child: CustomLoader(),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const AspectRatio(
+                                  aspectRatio: 2 / 3,
+                                  child: Icon(
+                                    Icons.error,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ),

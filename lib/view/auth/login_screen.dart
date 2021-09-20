@@ -35,10 +35,14 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: -30,
-            child: Image.asset(
-              kImageDir + 'bottom_login.png',
-              fit: BoxFit.fill,
+            bottom: 0,
+            child: SizedBox(
+              width: SizeConfig.screenWidth,
+              height: SizeConfig.screenWidth / 1.8,
+              child: Image.asset(
+                kImageDir + 'bottom_login.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           SafeArea(
