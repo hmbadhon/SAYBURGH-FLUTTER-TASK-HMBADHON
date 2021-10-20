@@ -3,7 +3,7 @@
 A new Flutter application.
 
 ## Getting Started
-This project used MVC pattern, Getx for state managment, sqflite for backend database, firebase for login and registration also shered prefs.
+This project used MVC pattern, Getx for state managment, sqflite for backend database, firebase/Wordpress for login and registration also shered prefs.
 Everything setup perfectly, if you wanna try this just go to https://www.themoviedb.org/ and make an account to get api key for yourself.
 After that just go to lib> service> network_service and change the api key with your key. Then you're good to go. thanks and happy coding :)
 
