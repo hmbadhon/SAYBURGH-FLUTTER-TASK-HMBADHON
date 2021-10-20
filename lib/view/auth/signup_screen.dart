@@ -6,7 +6,6 @@ import 'package:movie_app/sheared/input_form_widget.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 import 'package:movie_app/view/auth/login_screen.dart';
-import 'package:movie_app/view/root/main_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = 'signup_screen';
@@ -170,19 +169,19 @@ class SignUpScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SizedBox(
-                            width: SizeConfig.screenWidth / 3,
-                            child: DefaultBtn(
-                              title: 'Wanna Skip?',
-                              onPress: () {
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    MainScreen.routeName, (route) => false);
-                              },
-                            ),
-                          ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.centerRight,
+                        //   child: SizedBox(
+                        //     width: SizeConfig.screenWidth / 3,
+                        //     child: DefaultBtn(
+                        //       title: 'Wanna Skip?',
+                        //       onPress: () {
+                        //         Navigator.pushNamedAndRemoveUntil(context,
+                        //             MainScreen.routeName, (route) => false);
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
