@@ -9,6 +9,8 @@ const String kImageUrl = 'http://image.tmdb.org/t/p/w185';
 // const String kBase64ExtendVideo = 'data:video/mp4;base64,';
 // const String kBase64ExtendAudio = 'data:audio/mp3;base64,';
 
+/// Color const start here  ///
+
 const kPrimaryColor = Color(0xFF032541);
 const kSecondaryColor = Color(0xFF1FB9D6);
 const kWhiteColor = Colors.white;
@@ -24,6 +26,15 @@ const kSuccessColor = Color(0xFF55D85A);
 const kSaleColor = Color(0xFFF14705);
 const kIconColor = Color(0xFFF9784F);
 const kSubscriptionColor = Color(0xFFF2C822);
+
+/// Color const end here  ///
+
+final kOrdinaryShadow = BoxShadow(
+  color: kOrdinaryColor.withOpacity(.15),
+  spreadRadius: 1,
+  blurRadius: 1,
+  offset: Offset(0, 1),
+);
 
 final kHomeTitle = TextStyle(
   color: kBlackColor,

@@ -1,14 +1,12 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movie_app/sheared/custom_loader.dart';
+import 'package:movie_app/services/network_service.dart';
 import 'package:movie_app/sheared/default_btn.dart';
 import 'package:movie_app/sheared/input_form_widget.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
-import 'package:movie_app/view/home_screen/home_screen.dart';
+import 'package:movie_app/view/root/main_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
 
@@ -16,9 +14,9 @@ class LoginScreen extends StatelessWidget {
   static const routeName = 'login_screen';
   LoginScreen({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +80,14 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         InputFormWidget(
-                          fieldController: _emailController,
-                          labelText: 'Email Address',
-                          icon: Icons.email,
+                          fieldController: _nameController,
+                          labelText: 'User Name',
+                          icon: Icons.person,
                           fillColor: kOrdinaryColor2,
-                          keyType: TextInputType.emailAddress,
+                          keyType: TextInputType.name,
                           validation: (value) {
                             if (value.isEmpty) {
-                              return kEmailNullError;
-                            } else if (!emailValidatorRegExp.hasMatch(value)) {
-                              return kInvalidEmailError;
+                              return kNameNullError;
                             }
                             return null;
                           },
@@ -122,40 +118,22 @@ class LoginScreen extends StatelessWidget {
                               title: 'Login',
                               onPress: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  try {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (_) => const CustomLoader(
-                                        color: kWhiteColor,
-                                      ),
-                                    );
-                                    await _auth.signInWithEmailAndPassword(
-                                      email: _emailController.text,
-                                      password: _passController.text,
-                                    );
-                                    Navigator.pop(context);
-                                    prefs!.setBool('token', true);
-                                    Navigator.pushNamedAndRemoveUntil(context,
-                                        HomeScreen.routeName, (route) => false);
-                                    _passController.clear();
-                                    _emailController.clear();
-                                  } on FirebaseAuthException catch (e) {
-                                    if (e.code == 'user-not-found') {
-                                      Navigator.pop(context);
-                                      Get.snackbar(
-                                          'No user found for that email.', '',
-                                          colorText: kBlackColor);
-                                      log('No user found for that email.');
-                                    } else if (e.code == 'wrong-password') {
-                                      Navigator.pop(context);
-                                      Get.snackbar(
-                                          'Wrong password provided for that user.',
-                                          '',
-                                          colorText: kBlackColor);
-                                      log('Wrong password provided for that user.');
-                                    }
+                                  var p = await NetworkServices().logInUser(
+                                    context: context,
+                                    username: _nameController.text,
+                                    password: _passController.text,
+                                  );
+                                  Map<String, dynamic> js = p;
+                                  if (js.containsKey('data') &&
+                                      p['data']['status'] >= 400) {
+                                    Navigator.of(context).pop();
+                                    print(p['message']);
+                                    Get.snackbar('Invalid Credential', '');
+                                  } else {
+                                    Navigator.of(context).pop();
+                                    store(p, context);
                                   }
+                                  print('ok');
                                 }
                               },
                             ),
@@ -171,5 +149,31 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void store(var mat, BuildContext context) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs!.setString('token', mat['token'].toString());
+    prefs!.setString('username', mat['user_nicename'].toString());
+    prefs!.setString('email', mat['user_email'].toString());
+    prefs!.setString('name', mat['user_display_name'].toString());
+
+    var p = await NetworkServices().getUserProfile(
+      context: context,
+    );
+    Map<String, dynamic> js = p;
+    if (js.containsKey('data') && p['data']['status'] >= 400) {
+      Navigator.of(context).pop();
+      print(p['message']);
+      Get.snackbar('failed to get profile data', '');
+    } else {
+      Navigator.of(context).pop();
+      prefs!.setString('fName', p['first_name'].toString());
+      prefs!.setString('lName', p['last_name'].toString());
+      prefs!.setString('id', p['id'].toString());
+    }
+
+    Navigator.pushNamedAndRemoveUntil(
+        context, MainScreen.routeName, (route) => false);
   }
 }

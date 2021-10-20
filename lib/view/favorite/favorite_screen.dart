@@ -9,7 +9,7 @@ import 'package:movie_app/view/home_screen/details_screen.dart';
 class FavoriteScreen extends StatelessWidget {
   static const routeName = 'favorite_screen';
   FavoriteScreen({Key? key}) : super(key: key);
-  final movieFavoriteController = Get.put(MovieFavoriteController());
+  final MovieFavoriteController movieFavoriteController = Get.find();
 
   @override
   Widget build(BuildContext context) {

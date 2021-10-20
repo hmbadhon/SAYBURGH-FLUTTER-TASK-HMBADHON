@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -9,10 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:movie_app/controller/movies_list_controller.dart';
 import 'package:movie_app/sheared/custom_loader.dart';
 import 'package:movie_app/utils/constants.dart';
-import 'package:movie_app/view/auth/login_screen.dart';
 import 'package:movie_app/view/favorite/favorite_screen.dart';
 
-import '../../main.dart';
 import 'details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final MoviesController _moviesController = Get.put(MoviesController());
+  final MoviesController _moviesController = Get.find();
   final _scrollController = ScrollController();
   int page = 1;
 
@@ -64,40 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Icon(
               Icons.favorite,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              Get.defaultDialog(
-                title: 'Are you sure?',
-                content: const Text('It will logout from your account!'),
-                actions: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: kPrimaryColor,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                      prefs!.clear();
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, LoginScreen.routeName, (route) => false);
-                    },
-                    child: const Text("Confirm"),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(color: kPrimaryColor),
-                    ),
-                  ),
-                ],
-              );
-            },
-            icon: const Icon(
-              Icons.logout,
             ),
           ),
         ],

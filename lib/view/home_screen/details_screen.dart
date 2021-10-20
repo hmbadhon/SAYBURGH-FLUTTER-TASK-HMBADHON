@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -16,9 +15,8 @@ class DetailsScreen extends StatelessWidget {
     Key? key,
     this.movieId,
   }) : super(key: key);
-  final SingleMoviesController _singleMoviesController =
-      Get.put(SingleMoviesController());
-  final movieFavoriteController = Get.put(MovieFavoriteController());
+  final SingleMoviesController _singleMoviesController = Get.find();
+  final MovieFavoriteController movieFavoriteController = Get.find();
 
   @override
   Widget build(BuildContext context) {

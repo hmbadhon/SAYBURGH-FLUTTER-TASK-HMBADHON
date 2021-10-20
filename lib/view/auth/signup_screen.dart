@@ -1,25 +1,21 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movie_app/sheared/custom_loader.dart';
+import 'package:movie_app/services/network_service.dart';
 import 'package:movie_app/sheared/default_btn.dart';
 import 'package:movie_app/sheared/input_form_widget.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 import 'package:movie_app/view/auth/login_screen.dart';
-import 'package:movie_app/view/home_screen/home_screen.dart';
-
-import '../../main.dart';
+import 'package:movie_app/view/root/main_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = 'signup_screen';
   SignUpScreen({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +76,22 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   Form(
                     key: _formKey,
+                    autovalidateMode: AutovalidateMode.always,
                     child: Column(
                       children: [
+                        InputFormWidget(
+                          fieldController: _nameController,
+                          labelText: 'User Name',
+                          icon: Icons.person,
+                          fillColor: kOrdinaryColor2,
+                          keyType: TextInputType.name,
+                          validation: (value) {
+                            if (value.isEmpty) {
+                              return kNameNullError;
+                            }
+                            return null;
+                          },
+                        ),
                         InputFormWidget(
                           fieldController: _emailController,
                           labelText: 'Email Address',
@@ -137,39 +147,24 @@ class SignUpScreen extends StatelessWidget {
                               title: 'Signup',
                               onPress: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  try {
-                                    showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (_) => const CustomLoader(
-                                              color: kWhiteColor,
-                                            ));
-                                    await _auth.createUserWithEmailAndPassword(
-                                      email: _emailController.text,
-                                      password: _passController.text,
-                                    );
-                                    Navigator.pop(context);
-                                    prefs!.setBool('token', true);
-                                    Navigator.pushNamedAndRemoveUntil(context,
-                                        HomeScreen.routeName, (route) => false);
-                                    _passController.clear();
-                                    _emailController.clear();
-                                  } on FirebaseAuthException catch (e) {
-                                    if (e.code == 'email-already-in-use') {
-                                      Navigator.pop(context);
-                                      Get.snackbar(
-                                          'The account already exists for that email.',
-                                          '',
-                                          colorText: kBlackColor);
-
-                                      log('The account already exists for that email.');
-                                    }
-                                  } catch (e) {
-                                    Navigator.pop(context);
-                                    Get.snackbar(e.toString(), '',
-                                        colorText: kBlackColor);
-                                    log(e.toString());
+                                  var p = await NetworkServices().createUser(
+                                    context: context,
+                                    username: _nameController.text,
+                                    password: _passController.text,
+                                    email: _emailController.text,
+                                  );
+                                  Map<String, dynamic> js = p;
+                                  if (p['code'] >= 400) {
+                                    Navigator.of(context).pop();
+                                    print(p['message']);
+                                    Get.snackbar('Error', p['message']);
+                                  } else {
+                                    Navigator.of(context).pop();
+                                    Navigator.pushReplacementNamed(
+                                        context, LoginScreen.routeName);
+                                    Get.snackbar('Registered Successfully', '');
                                   }
+                                  print('ok');
                                 }
                               },
                             ),
@@ -183,7 +178,7 @@ class SignUpScreen extends StatelessWidget {
                               title: 'Wanna Skip?',
                               onPress: () {
                                 Navigator.pushNamedAndRemoveUntil(context,
-                                    HomeScreen.routeName, (route) => false);
+                                    MainScreen.routeName, (route) => false);
                               },
                             ),
                           ),

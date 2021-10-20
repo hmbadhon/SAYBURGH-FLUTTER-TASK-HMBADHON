@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 import 'package:movie_app/view/auth/signup_screen.dart';
-import 'package:movie_app/view/home_screen/home_screen.dart';
+import 'package:movie_app/view/root/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 2), () {
       if (prefs!.containsKey('token')) {
         Navigator.pushNamedAndRemoveUntil(
-            context, HomeScreen.routeName, (route) => false);
+            context, MainScreen.routeName, (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, SignUpScreen.routeName, (route) => false);
