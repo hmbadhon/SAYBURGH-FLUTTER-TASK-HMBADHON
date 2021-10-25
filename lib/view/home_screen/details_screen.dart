@@ -8,19 +8,26 @@ import 'package:movie_app/sheared/custom_loader.dart';
 import 'package:movie_app/utils/constants.dart';
 import 'package:movie_app/utils/size_config.dart';
 
-class DetailsScreen extends StatelessWidget {
+class DetailsScreen extends StatefulWidget {
   static const routeName = 'details_screen';
   final String? movieId;
   DetailsScreen({
     Key? key,
     this.movieId,
   }) : super(key: key);
+
+  @override
+  State<DetailsScreen> createState() => _DetailsScreenState();
+}
+
+class _DetailsScreenState extends State<DetailsScreen> {
   final SingleMoviesController _singleMoviesController = Get.find();
+
   final MovieFavoriteController movieFavoriteController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    _singleMoviesController.fetchSingleMovie(movieId: movieId);
+    _singleMoviesController.fetchSingleMovie(movieId: widget.movieId);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -86,15 +93,21 @@ class DetailsScreen extends StatelessWidget {
                         right: 10,
                         child: SafeArea(
                           child: IconButton(
-                            onPressed: () {
-                              movieFavoriteController.addToFav(
+                            onPressed: () async {
+                              await movieFavoriteController.addToFav(
                                 _singleMoviesController.singleMovie,
                               );
+                              setState(() {});
                             },
-                            icon: const Icon(
-                              Icons.favorite_border,
-                              color: kWhiteColor,
-                            ),
+                            icon: Icon(Icons.favorite_border,
+                                color: movieFavoriteController.products
+                                            .indexWhere((element) =>
+                                                element.id ==
+                                                _singleMoviesController
+                                                    .singleMovie.id) >=
+                                        0
+                                    ? kErrorColor
+                                    : kWhiteColor),
                           ),
                         ),
                       ),

@@ -8,7 +8,16 @@ import 'main.dart';
 
 Future<void> init() async {
   prefs = await SharedPreferences.getInstance();
-  Get.lazyPut(() => MoviesController());
-  Get.lazyPut(() => SingleMoviesController());
-  Get.lazyPut(() => MovieFavoriteController());
+  Get.lazyPut(
+    () => MoviesController(),
+    fenix: true,
+  );
+  Get.lazyPut(
+    () => SingleMoviesController(),
+    fenix: true,
+  );
+  Get.lazyPut(
+    () => MovieFavoriteController(),
+    fenix: true,
+  );
 }

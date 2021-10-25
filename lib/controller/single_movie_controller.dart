@@ -4,6 +4,7 @@ import 'package:movie_app/services/network_service.dart';
 
 class SingleMoviesController extends GetxController {
   late RpSingleMoviesModel singleMovie;
+
   var isLoading = false.obs;
 
   Future<void> fetchSingleMovie({String? movieId}) async {

@@ -16,7 +16,7 @@ class MovieFavoriteController extends GetxController {
     super.onInit();
   }
 
-  void addToFav(RpSingleMoviesModel rpSingleMoviesModel) async {
+  Future<void> addToFav(RpSingleMoviesModel rpSingleMoviesModel) async {
     //for adding existing items to the fav
     var isExist =
         products.indexWhere((element) => element.id == rpSingleMoviesModel.id);
